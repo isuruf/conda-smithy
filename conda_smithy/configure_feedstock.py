@@ -71,6 +71,10 @@ def merge_list_of_dicts(list_of_dicts):
     return squished_dict
 
 
+def argsort(seq):
+    return sorted(range(len(seq)), key=seq.__getitem__)
+
+
 def break_up_top_level_values(top_level_keys, squished_variants):
     """top-level values make up CI configurations.  We need to break them up
     into individual files."""
@@ -120,10 +124,29 @@ def break_up_top_level_values(top_level_keys, squished_variants):
     configs = []
     dimensions = []
 
+    for group in zip_key_groups:
+        for key in group[:]:
+            if key not in squished_variants.keys():
+                group.remove(key)
+
+    for group in zip_key_groups:
+        group.sort()
+
+    sorting_order = {}
+    for group in zip_key_groups:
+        for i, key in enumerate(group):
+            if i == 0:
+                order = argsort(list(squished_variants[key]))
+            sorting_order[key] = order
+
     # sort values so that the diff doesn't show randomly changing order
     for key, value in squished_variants.items():
         if type(value) in (list, set, tuple):
-            squished_variants[key] = sorted(list(value))
+            val = list(value)
+            if key in sorting_order:
+                squished_variants[key] = [val[i] for i in sorting_order[key]]
+            else:
+                squished_variants[key] = sorted(val)
 
     if top_level_dimensions:
         dimensions.extend(top_level_dimensions)
