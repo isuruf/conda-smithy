@@ -316,6 +316,26 @@ def update_cb3(recipe_path, conda_build_config_path):
             messages['Removing features section as it is empty'] = True
             change_lines[features_section.start-1] = (lines[features_section.start-1], None)
 
+    test_requires = meta['test']['requires']
+    remove_test_requires = True
+
+    # Remove test/requires python
+    if test_requires is not None:
+        for i in range(test_requires.start, test_requires.end):
+            line = lines[i].strip()
+            if line.startswith('-'):
+                line = line[2:]
+                if line.startswith('python'):
+                    messages['Removing test/requires'] = True
+                    change_lines[i] = (lines[i], None)
+                    # need_c = True
+                elif len(line) > 0:
+                    remove_test_requires = False
+
+        if remove_test_requires:
+            messages['Removing test/requires section as it is empty'] = True
+            change_lines[test_requires.start-1] = (lines[test_requires.start-1], None)
+
     def add_compiler(name, p_name):
         if need_mingw_c:
             build_lines.append(build_space + "{{ compiler('"+ name + "') }}        # [unix]")
