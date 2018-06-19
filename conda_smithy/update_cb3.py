@@ -293,7 +293,7 @@ def update_cb3(recipe_path, conda_build_config_path):
         if line.strip().startswith(vc14):
             need_c = True
             messages["Removed {} and added a skip".format(vc14)] = True
-            change_lines[i] = line, line.replace(vc14, 'skip: True  # [vc<14]')
+            change_lines[i] = line, line.replace(vc14, 'skip: True  # [win and vc<14]')
 
 
     features_section = build_section['features']
