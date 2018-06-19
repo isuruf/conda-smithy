@@ -149,6 +149,10 @@ def update_cb3(recipe_path, conda_build_config_path):
     if not requirements_section:
         return orig_content, ''
 
+    host_section = requirements_section['host']
+    if host_section:
+        raise RuntimeError("This recipe is already in conda-build=3 format")
+
     reqbuild_section = requirements_section['build']
     if not reqbuild_section:
         return orig_content, ''
