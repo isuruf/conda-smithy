@@ -1386,17 +1386,22 @@ def _load_forge_config(forge_dir, exclusive_config_file):
                 "pool": {"vmImage": "ubuntu-16.04",},
                 "timeoutInMinutes": 360,
                 "strategy": {"maxParallel": 8},
+                "variables": {"CI": "azure"},
             },
             "settings_osx": {
                 "pool": {"vmImage": "macOS-10.14",},
                 "timeoutInMinutes": 360,
                 "strategy": {"maxParallel": 8},
+                "variables": {"CI": "azure"},
             },
             "settings_win": {
                 "pool": {"vmImage": "vs2017-win2016",},
                 "timeoutInMinutes": 360,
                 "strategy": {"maxParallel": 4},
-                "variables": {"CONDA_BLD_PATH": r"D:\\bld\\"},
+                "variables": {
+                    "CONDA_BLD_PATH": r"D:\\bld\\",
+                    "CI": "azure",
+                },
             },
             # disallow publication of azure artifacts for now.
             "upload_packages": False,
