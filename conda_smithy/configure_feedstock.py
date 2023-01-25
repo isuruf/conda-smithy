@@ -1505,7 +1505,7 @@ def azure_build_id_from_token(forge_config):
         org_or_user=forge_config["azure"]["user_or_org"],
         project_name=forge_config["azure"]["project_name"],
     )
-    repo = forge_config["github"]["repo_name"]
+    repo = forge_config["package_name"]
     build_info = azure_ci_utils.get_build_id(repo, config)
     forge_config["azure"]["build_id"] = build_info["build_id"]
 
@@ -1518,7 +1518,7 @@ def azure_build_id_from_public(forge_config):
         "https://dev.azure.com/{org}/{project_name}/_apis/build/definitions?name={repo}".format(
             org=forge_config["azure"]["user_or_org"],
             project_name=forge_config["azure"]["project_name"],
-            repo=forge_config["github"]["repo_name"],
+            repo=forge_config["package_name"],
         )
     )
     resp.raise_for_status()
@@ -1599,6 +1599,13 @@ def render_README(jinja_env, forge_config, forge_dir, render_info=None):
             )
         )
     )
+
+    git_repo_name = os.path.basename(forge_dir)
+    if git_repo_name.endswith("-feedstock"):
+        git_repo_name = git_repo_name[:-len("-feedstock")]
+    if git_repo_name != package_name:
+        logger.warning(f"Git subfolder name {git_repo_name} is not equal to "
+                f"the feedstock name {package_name} inferred from the recipe.")
 
     if forge_config["azure"].get("build_id") is None:
 
@@ -1774,7 +1781,6 @@ def _load_forge_config(forge_dir, exclusive_config_file, forge_yml=None):
         },
         "github": {
             "user_or_org": "conda-forge",
-            "repo_name": "",
             "branch_name": "main",
             "tooling_branch_name": "main",
         },
@@ -1956,11 +1962,6 @@ def _load_forge_config(forge_dir, exclusive_config_file, forge_yml=None):
     os.environ["CF_MAX_R_VER"] = config["max_r_ver"]
 
     config["package"] = os.path.basename(forge_dir)
-    if not config["github"]["repo_name"]:
-        feedstock_name = os.path.basename(forge_dir)
-        if not feedstock_name.endswith("-feedstock"):
-            feedstock_name += "-feedstock"
-        config["github"]["repo_name"] = feedstock_name
     config["exclusive_config_file"] = exclusive_config_file
     return config
 

@@ -6,7 +6,7 @@
 About {{ package_name }}-feedstock
 ======{{ '=' * package_name|length }}==========
 
-Feedstock license: [BSD-3-Clause](https://github.com/{{ github.user_or_org }}/{{ github.repo_name }}/blob/{{ github.branch_name }}/LICENSE.txt)
+Feedstock license: [BSD-3-Clause](https://github.com/{{ github.user_or_org }}/{{ package_name }}-feedstock/blob/{{ github.branch_name }}/LICENSE.txt)
 
 {% for output_name, about in package_about -%}
 {%- set license_url = about.license_url -%}
@@ -41,7 +41,7 @@ Documentation: {{ about.doc_url }}
 {% endfor %}
 Current build status
 ====================
-{%- set appveyor_url_name = github.repo_name.replace('_', '-').replace('.', '-') %}
+{%- set appveyor_url_name = package_name.replace('_', '-').replace('.', '-') + '-feedstock' %}
 {%- set shield = "https://img.shields.io/" %}
 {#  Due to github's markdown rendering within tables being a bit shaky, we have to fall back to an HTML table here since we wish
   to use a <details> tag.  Markdown rendering within html tables is weird and only works if you make EVERYTHING a paragraph which
@@ -54,8 +54,8 @@ Current build status
   <tr>
     <td>All platforms:</td>
     <td>
-      <a href="https://circleci.com/gh/{{ github.user_or_org }}/{{ github.repo_name }}">
-        <img src="{{ shield }}circleci/project/github/{{ github.user_or_org }}/{{ github.repo_name }}/{{ github.branch_name }}.svg?label=noarch">
+      <a href="https://circleci.com/gh/{{ github.user_or_org }}/{{ package_name }}-feedstock">
+        <img src="{{ shield }}circleci/project/github/{{ github.user_or_org }}/{{ package_name }}-feedstock/{{ github.branch_name }}.svg?label=noarch">
       </a>
     </td>
   </tr>
@@ -64,7 +64,7 @@ Current build status
     {#- Sample url #-}
     {#- [![Azure Status](https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cryptography-feedstock?branchName=master)](https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=195&branchName=master) -#}
     {%- set azure_url %}https://dev.azure.com/{{ azure.user_or_org }}/{{ azure.project_name }}/_build/latest?definitionId={{ azure.build_id }}&branchName={{ github.branch_name }}{%- endset -%}
-    {%- set azure_image_url %}https://dev.azure.com/{{ azure.user_or_org }}/{{ azure.project_name }}/_apis/build/status/{{ github.repo_name }}?branchName={{ github.branch_name }}{%- endset -%}
+    {%- set azure_image_url %}https://dev.azure.com/{{ azure.user_or_org }}/{{ azure.project_name }}/_apis/build/status/{{ package_name }}-feedstock?branchName={{ github.branch_name }}{%- endset -%}
     <td>All platforms:</td>
     <td>
       <a href="{{ azure_url }}">
@@ -85,8 +85,8 @@ Current build status
   <tr>
     <td>CircleCI</td>
     <td>
-      <a href="https://circleci.com/gh/{{ github.user_or_org }}/{{ github.repo_name }}">
-        <img alt="{{ circle.platforms }}" src="{{ shield }}circleci/project/github/{{ github.user_or_org }}/{{ github.repo_name }}/{{ github.branch_name }}.svg?label={{ circle.platforms }}">
+      <a href="https://circleci.com/gh/{{ github.user_or_org }}/{{ package_name }}-feedstock">
+        <img alt="{{ circle.platforms }}" src="{{ shield }}circleci/project/github/{{ github.user_or_org }}/{{ package_name }}-feedstock/{{ github.branch_name }}.svg?label={{ circle.platforms }}">
       </a>
     </td>
   </tr>
@@ -95,8 +95,8 @@ Current build status
   <tr>
     <td>Travis</td>
     <td>
-      <a href="https://app.travis-ci.com/{{ github.user_or_org }}/{{ github.repo_name }}">
-        <img alt="linux" src="{{ shield }}travis/com/{{ github.user_or_org }}/{{ github.repo_name }}/{{ github.branch_name }}.svg?label=Linux">
+      <a href="https://app.travis-ci.com/{{ github.user_or_org }}/{{ package_name }}-feedstock">
+        <img alt="linux" src="{{ shield }}travis/com/{{ github.user_or_org }}/{{ package_name }}-feedstock/{{ github.branch_name }}.svg?label=Linux">
       </a>
     </td>
   </tr>
@@ -105,8 +105,8 @@ Current build status
   <tr>
     <td>Drone</td>
     <td>
-      <a href="https://cloud.drone.io/{{ github.user_or_org }}/{{ github.repo_name }}">
-        <img alt="linux" src="{{ shield }}drone/build/{{ github.user_or_org }}/{{ github.repo_name }}/{{ github.branch_name }}.svg?label=Linux">
+      <a href="https://cloud.drone.io/{{ github.user_or_org }}/{{ package_name }}-feedstock">
+        <img alt="linux" src="{{ shield }}drone/build/{{ github.user_or_org }}/{{ package_name }}-feedstock/{{ github.branch_name }}.svg?label=Linux">
       </a>
     </td>
   </tr>
@@ -125,7 +125,7 @@ Current build status
     {#- Sample url #-}
     {#- [![Azure Status](https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cryptography-feedstock?branchName=master)](https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=195&branchName=master) -#}
     {% set azure_url %}https://dev.azure.com/{{ azure.user_or_org }}/{{ azure.project_name }}/_build/latest?definitionId={{ azure.build_id }}&branchName={{ github.branch_name }}{% endset %}
-    {% set azure_image_url %}https://dev.azure.com/{{ azure.user_or_org }}/{{ azure.project_name }}/_apis/build/status/{{ github.repo_name }}?branchName={{ github.branch_name }}{% endset %}
+    {% set azure_image_url %}https://dev.azure.com/{{ azure.user_or_org }}/{{ azure.project_name }}/_apis/build/status/{{ package_name }}-feedstock?branchName={{ github.branch_name }}{% endset %}
   <tr>
     <td>Azure</td>
     <td>
